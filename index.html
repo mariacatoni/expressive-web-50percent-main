@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prism — An Emotional Color Reading</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ── BACKGROUND LAYERS ── -->
+  <div class="bg-layer" id="bgLayer"></div>
+  <div class="stars" id="stars"></div>
+  <div class="water" id="water">
+    <div class="ripple-line" style="--spd:7s;  --delay:0s;   bottom:180px;"></div>
+    <div class="ripple-line" style="--spd:9s;  --delay:1.5s; bottom:140px;"></div>
+    <div class="ripple-line" style="--spd:11s; --delay:3s;   bottom:100px;"></div>
+    <div class="ripple-line" style="--spd:8s;  --delay:0.5s; bottom:60px;"></div>
+    <div class="ripple-line" style="--spd:13s; --delay:2s;   bottom:20px;"></div>
+  </div>
+  <div class="fog" id="fog"></div>
+
+  <!-- ══════════════════════════════════════
+       HOME SCREEN
+  ══════════════════════════════════════ -->
+  <div class="screen active" id="screen-landing">
+
+    <div class="prism-title">Prism</div>
+    <div class="prism-subtitle">An Emotional Color Reading</div>
+
+    <div class="prism-visual">
+      <svg class="prism-svg" width="160" height="160" viewBox="0 0 160 160" fill="none">
+        <polygon points="80,10 20,130 140,130" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+        <line x1="14" y1="70" x2="55" y2="70" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+        <line x1="140" y1="130" x2="168" y2="108" stroke="#FF2400"  stroke-width="1.5" opacity="0.85"/>
+        <line x1="140" y1="130" x2="170" y2="118" stroke="#FF7F00"  stroke-width="1.5" opacity="0.85"/>
+        <line x1="140" y1="130" x2="171" y2="130" stroke="#FFD700"  stroke-width="1.5" opacity="0.85"/>
+        <line x1="140" y1="130" x2="170" y2="140" stroke="#4CAF50"  stroke-width="1.5" opacity="0.85"/>
+        <line x1="140" y1="130" x2="167" y2="150" stroke="#1E90FF"  stroke-width="1.5" opacity="0.85"/>
+        <line x1="140" y1="130" x2="161" y2="158" stroke="#BF5FFF"  stroke-width="1.5" opacity="0.85"/>
+        <line x1="140" y1="130" x2="153" y2="164" stroke="#FF1493"  stroke-width="1.5" opacity="0.85"/>
+      </svg>
+    </div>
+
+    <p class="landing-text">
+      Colors speak before words do.<br>
+      The one you're drawn to right now<br>
+      may have something to tell you.
+    </p>
+
+    <div class="path-choice" aria-label="How would you like to begin?">
+      <button class="path-btn path-btn--primary" type="button" id="btn-color-path" data-goto="screen-colors">
+        <span class="path-btn-title">Choose by color</span>
+        <span class="path-btn-sub">I'll let instinct guide me</span>
+      </button>
+      <div class="path-divider">or</div>
+      <button class="path-btn" type="button" id="btn-feeling-path" data-goto="screen-feeling">
+        <span class="path-btn-title">Share how you're feeling</span>
+        <span class="path-btn-sub">Let the cards find me</span>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- COLOR PATH: pick a color orb -->
+  <div class="screen" id="screen-colors" aria-hidden="true">
+    <p class="screen-kicker">Instinct</p>
+    <h2 class="screen-title">Which color calls to you?</h2>
+    <p class="screen-lede">No wrong answers — only the one that feels true right now.</p>
+
+    <!-- Color orbs are built by JavaScript -->
+    <div class="color-orb-grid" id="colorOrbGrid" role="list" aria-label="Color choices"></div>
+
+    <button type="button" class="text-link back-btn" data-back="screen-landing">← Back</button>
+  </div>
+
+  <!-- COLOR PATH: two face-down cards for the chosen color -->
+  <div class="screen" id="screen-pick" aria-hidden="true">
+    <p class="screen-kicker">Instinct</p>
+    <h2 class="screen-title">Two cards rest before you</h2>
+    <p class="screen-lede">Choose the one that feels right.</p>
+
+    <!-- Filled by JavaScript only after a color is chosen -->
+    <div class="pick-row" id="pickRow" role="list" aria-label="Two cards to choose from"></div>
+
+    <button type="button" class="text-link back-btn" data-back="screen-colors">← Back</button>
+  </div>
+
+  <!-- FEELING PATH: mood words -->
+  <div class="screen" id="screen-feeling" aria-hidden="true">
+    <p class="screen-kicker">Language</p>
+    <h2 class="screen-title">Tell the deck how you feel</h2>
+    <p class="screen-lede">Type anything—one word or a whole sentence. The cards will lean toward a hue that matches your tone.</p>
+
+    <form class="feeling-form" id="feelingForm" autocomplete="off">
+      <label class="sr-only" for="feelingInput">How are you feeling?</label>
+      <textarea
+        class="feeling-input"
+        id="feelingInput"
+        name="feeling"
+        rows="3"
+        maxlength="240"
+        placeholder="I feel…"
+        required
+      ></textarea>
+      <div class="feeling-actions">
+        <button class="path-btn path-btn--primary feeling-submit" type="submit">
+          <span class="path-btn-title">Find my card</span>
+          <span class="path-btn-sub">Match my words to a hue</span>
+        </button>
+        <div class="feeling-hint" id="feelingHint" aria-live="polite"></div>
+      </div>
+    </form>
+
+    <button type="button" class="text-link back-btn" data-back="screen-landing">← Back</button>
+  </div>
+
+  <!-- READING -->
+  <div class="screen" id="screen-reading" aria-hidden="true">
+    <div class="reading-accent" id="readingAccent" aria-hidden="true"></div>
+    <p class="screen-kicker" id="readingKicker">Your reading</p>
+    <h2 class="screen-title reading-title" id="readingHue">—</h2>
+    <div class="reading-body" id="readingBody"></div>
+    <button type="button" class="text-link" id="reading-again">Begin again</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
